@@ -90,6 +90,9 @@ public class OurBrain implements Brain {
   // calculate average height
   int sumHeight = 0;
 
+  // first run through
+  boolean first = true;
+
   // essentially initializes as bottom of board
   boolean[] prev_row = new boolean[width];
   Arrays.fill(prev_row, true);
@@ -110,6 +113,8 @@ public class OurBrain implements Brain {
       prev_space = true;
 
       for (int c = 0; c < width; c++){
+
+        if (first) sumHeight += board.getColumnHeight(c);
         
         // if there's a block here
         if (board.getGrid(c,r)){
@@ -143,14 +148,17 @@ public class OurBrain implements Brain {
         }
 
       }
+
+      first = false;
     }
   }
   
+  double avgHeight = ((double)sumHeight)/width;
 
   
   //   
 
-  return (double) (10000 * loss + 4 * exposed + 3 * pieces_away + 1.5 * holes);
+  return (double) (2.5 * exposed - 0.001 * pieces_away + 1.25 * holes);
  }
 
 }
